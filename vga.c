@@ -7,7 +7,7 @@ int line=0;
 uint16_t* const vga=(uint16_t* const) 0xB8000;
 
 unsigned short blank;
-unsigned char default_color= MAKE_COLOR(BLACK, LIGHT_GRAY) ;
+unsigned char default_color= MAKE_COLOR(LIGHT_GRAY, BLACK) ;
 
 
 
@@ -23,13 +23,13 @@ unsigned short makeEntry(unsigned char c, unsigned char color){
 
     for(int r=0;r<height;r++){
         for(int c=0;c<width;c++){
-            vga[r*80+c] =makeEntry(' ',BLACK);
+            vga[r*width+c] =makeEntry(' ',default_color);
         }
     }
  }
 
  void newLine(){
-    if(line < row-1){
+    if(line < height-1){
         line++;
         col=0;
     }else{
@@ -38,7 +38,7 @@ unsigned short makeEntry(unsigned char c, unsigned char color){
     }
  }
  void scrollUp(){
-    for (int r = 0; r < height; r++)
+    for (int r = 1; r < height; r++)
     {
         for (int c = 0; c < width; c++)
         {
@@ -46,9 +46,9 @@ unsigned short makeEntry(unsigned char c, unsigned char color){
         }
         for (int c = 0; c < width; c++)
         {
-            vga[(height-1) * width + c] = ' ' | default_color;
+            vga[(height-1) * width + c] = makeEntry(' ',default_color);
         }
-        
+        if(line>0) line--;
         
     }
     
@@ -73,7 +73,8 @@ unsigned short makeEntry(unsigned char c, unsigned char color){
                    newLine();
 
                 }
-                vga[line*width+(col++)] = *s | default_color;
+                vga[row*width+col] = makeEntry(*s,default_color);
+                col++;
                 break;
             }
             s++;
