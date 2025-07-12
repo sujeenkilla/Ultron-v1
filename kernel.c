@@ -1,5 +1,6 @@
 #include "vga.h"
+#include "gdt.h"
 void kmain(void){
-    reSet();
-    print("Hello world\r\n");
+    initGdt();
+    print("GDT is done \r\n");
 }
