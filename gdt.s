@@ -14,3 +14,9 @@ gdt_flush:
 
 .flush:
     RET
+
+global tss_flush
+tss_flush:
+    MOV ax, 0x28
+    LTR ax
+    RET

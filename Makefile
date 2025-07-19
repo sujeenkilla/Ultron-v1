@@ -7,6 +7,7 @@ kernel:
 	gcc -m32 -fno-stack-protector -fno-builtin -c kernel.c -o kernel.o
 	gcc -m32 -fno-stack-protector -fno-builtin -c vga.c -o vga.o
 	gcc -m32 -fno-stack-protector -fno-builtin -c gdt.c -o gdt.o
+	gcc -m32 -fno-stack-protector -fno-builtin -c util.c -o util.o
 
 boot:
 	nasm -f elf32 boot.s -o boot.o
@@ -14,7 +15,7 @@ boot:
 
 
 image:
-	ld -m elf_i386 -T linker.ld -o kernel boot.o kernel.o vga.o gdt.o gdts.o
+	ld -m elf_i386 -T linker.ld -o kernel boot.o kernel.o vga.o gdt.o gdts.o util.o
 	mv kernel Jazz/boot/kernel
 	grub-mkrescue -o kernel.iso Jazz/
 	rm *.o
